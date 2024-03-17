@@ -1,0 +1,24 @@
+.table {
+	width: 100%;
+	margin: 12px 0;
+	text-align: left;
+
+	tr {
+		border-bottom: 1px solid #ededed;
+	}
+
+	th {
+		color: rgba(27, 31, 59, 0.65);
+		padding: 12px 0;
+		font-weight: 500;
+	}
+
+	td {
+		padding: 12px 0;
+		font-weight: 400;
+	}
+}
+
+tui-pagination {
+	margin-top: 100px;
+}

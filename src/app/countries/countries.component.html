@@ -1,0 +1,33 @@
+<table tuiTable class="table">
+	<thead>
+		<tr>
+			<th tuiTh>ID страны</th>
+			<th tuiTh>Наименование</th>
+			<th tuiTh>Код страны</th>
+			<th tuiTh>Код валют</th>
+		</tr>
+	</thead>
+	<tbody tuiTbody>
+		<!-- <tr *ngFor="let row of data">
+			<td tuiTd>{{ row.wikiDataId }}</td>
+			<td tuiTd>{{ row.name || '' }}</td>
+			<td tuiTd>{{ row.code }}</td>
+			<td tuiTd>{{ row.currencyCodes }}</td>
+		</tr> -->
+		@for (item of data; track item.wikiDataId) {
+			<tr tuiTr>
+				<td tuiTd>{{ item.wikiDataId }}</td>
+				<td tuiTd>{{ item.name || '' }}</td>
+				<td tuiTd>{{ item.code }}</td>
+				<td tuiTd>{{ item.currencyCodes }}</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<tui-pagination
+	[index]="currentPageIndex"
+	[length]="totalPages"
+	(indexChange)="goToPage($event)"
+>
+</tui-pagination>
