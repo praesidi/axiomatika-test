@@ -1,0 +1,54 @@
+<div class="filters-container">
+	<form [formGroup]="form" class="form">
+		<tui-select formControlName="value" tuiTextfieldSize="s">
+			<tui-data-list-wrapper
+				*tuiDataList
+				[items]="items"
+			></tui-data-list-wrapper>
+		</tui-select>
+
+		<tui-input
+			tuiTextfieldIconLeft="tuiIconSearch"
+			formControlName="value"
+			tuiTextfieldSize="s"
+			[tuiTextfieldCleaner]="true"
+			[tuiTextfieldLabelOutside]="true"
+			class="input"
+		>
+			Поиск
+			<input placeholder="Введите название страны" tuiTextfield type="text" />
+		</tui-input>
+	</form>
+</div>
+
+<table tuiTable class="table">
+	<thead>
+		<tr>
+			<th tuiTh>Страны</th>
+			<th tuiTh>Наименование</th>
+			<th tuiTh>Регион</th>
+			<th tuiTh>Население</th>
+			<th tuiTh></th>
+		</tr>
+	</thead>
+	<tbody tuiTbody>
+		@for (item of data; track item.wikiDataId) {
+			<tr tuiTr>
+				<td tuiTd>{{ item.country }}</td>
+				<td tuiTd>{{ item.name }}</td>
+				<td tuiTd>{{ item.region }}</td>
+				<td tuiTd>{{ item.population }}</td>
+				<td tuiTd><button>open</button></td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<div class="pagination-wrapper">
+	<tui-pagination
+		[index]="currentPageIndex"
+		[length]="totalPages"
+		(indexChange)="goToPage($event)"
+	>
+	</tui-pagination>
+</div>

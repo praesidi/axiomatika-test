@@ -1,0 +1,41 @@
+.form {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	tui-input {
+		width: 225px;
+	}
+
+	tui-select {
+		min-width: 95px;
+	}
+}
+
+.table {
+	width: 100%;
+	margin: 12px 0;
+	text-align: left;
+
+	tr {
+		border-bottom: 1px solid #ededed;
+	}
+
+	th {
+		color: rgba(27, 31, 59, 0.65);
+		padding: 12px 0;
+		font-weight: 500;
+	}
+
+	td {
+		padding: 12px 0;
+		font-weight: 400;
+	}
+}
+
+.pagination-wrapper {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	margin-top: 18px;
+}
