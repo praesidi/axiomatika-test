@@ -1,3 +1,19 @@
+<div class="searchbar-wrapper">
+	<form [formGroup]="form">
+		<tui-input
+			tuiTextfieldIconLeft="tuiIconSearch"
+			formControlName="value"
+			tuiTextfieldSize="s"
+			[tuiTextfieldCleaner]="true"
+			[tuiTextfieldLabelOutside]="true"
+			class="input"
+		>
+			Поиск
+			<input placeholder="Введите название страны" tuiTextfield type="text" />
+		</tui-input>
+	</form>
+</div>
+
 <table tuiTable class="table">
 	<thead>
 		<tr>
@@ -8,16 +24,15 @@
 		</tr>
 	</thead>
 	<tbody tuiTbody>
-		<!-- <tr *ngFor="let row of data">
-			<td tuiTd>{{ row.wikiDataId }}</td>
-			<td tuiTd>{{ row.name || '' }}</td>
-			<td tuiTd>{{ row.code }}</td>
-			<td tuiTd>{{ row.currencyCodes }}</td>
-		</tr> -->
 		@for (item of data; track item.wikiDataId) {
 			<tr tuiTr>
-				<td tuiTd>{{ item.wikiDataId }}</td>
-				<td tuiTd>{{ item.name || '' }}</td>
+				<td tuiTd>
+					<div class="country-link">
+						{{ item.wikiDataId }}
+						<a icon="tuiIconExternalLink" iconAlign="left" tuiLink> </a>
+					</div>
+				</td>
+				<td tuiTd>{{ item.name }}</td>
 				<td tuiTd>{{ item.code }}</td>
 				<td tuiTd>{{ item.currencyCodes }}</td>
 			</tr>
@@ -25,9 +40,11 @@
 	</tbody>
 </table>
 
-<tui-pagination
-	[index]="currentPageIndex"
-	[length]="totalPages"
-	(indexChange)="goToPage($event)"
->
-</tui-pagination>
+<div class="pagination-wrapper">
+	<tui-pagination
+		[index]="currentPageIndex"
+		[length]="totalPages"
+		(indexChange)="goToPage($event)"
+	>
+	</tui-pagination>
+</div>

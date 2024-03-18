@@ -1,8 +1,10 @@
-import { NgFor } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
 import { TuiDropdownModule } from '@taiga-ui/core';
-import { TuiPaginationModule } from '@taiga-ui/kit';
+import { TuiPaginationModule, TuiInputModule } from '@taiga-ui/kit';
+import { TuiTextfieldControllerModule, TuiLinkModule } from '@taiga-ui/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 interface Country {
 	code: string;
@@ -14,11 +16,18 @@ interface Country {
 @Component({
 	selector: 'app-countries',
 	standalone: true,
-	imports: [TuiDropdownModule, TuiPaginationModule, NgFor],
+	imports: [
+		ReactiveFormsModule,
+		TuiDropdownModule,
+		TuiPaginationModule,
+		TuiInputModule,
+		TuiTextfieldControllerModule,
+		TuiLinkModule,
+	],
 	templateUrl: './countries.component.html',
 	styleUrl: './countries.component.scss',
 })
-export class CountriesComponent {
+export class CountriesComponent implements OnInit {
 	data: Country[] = [];
 	httpClient = inject(HttpClient);
 
@@ -26,7 +35,9 @@ export class CountriesComponent {
 	currentPageIndex = 0;
 	limit = 5;
 
-	constructor() {}
+	form = new FormGroup({
+		value: new FormControl(''),
+	});
 
 	ngOnInit(): void {
 		this.fetchData();

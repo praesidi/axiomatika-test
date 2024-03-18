@@ -1,3 +1,13 @@
+.searchbar-wrapper {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	tui-input {
+		width: 225px;
+	}
+}
+
 .table {
 	width: 100%;
 	margin: 12px 0;
@@ -17,8 +27,21 @@
 		padding: 12px 0;
 		font-weight: 400;
 	}
+
+	.country-link {
+		display: flex;
+		justify-content: space-between;
+		padding-right: 10px;
+
+		a {
+			color: rgba(27, 31, 59, 0.65);
+		}
+	}
 }
 
-tui-pagination {
-	margin-top: 100px;
+.pagination-wrapper {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	margin-top: 18px;
 }
