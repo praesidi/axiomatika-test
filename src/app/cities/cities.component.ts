@@ -78,4 +78,17 @@ export class CitiesComponent implements OnInit {
 		this.currentPageIndex = index;
 		console.info('New page:', index);
 	}
+
+	formatPopulationNumber(population: number) {
+		if (population >= 1000000) {
+			const mils = Math.floor(population / 1000000);
+			const thousands = Math.floor((population % 1000000) / 1000);
+
+			return `${mils}.${thousands} млн.`;
+		} else if (population >= 1000) {
+			return `${Math.floor(population / 1000)} тыс.`;
+		} else {
+			return population;
+		}
+	}
 }
