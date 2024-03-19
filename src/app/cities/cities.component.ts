@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
 	TuiDropdownModule,
 	TuiTextfieldControllerModule,
 	TuiDataListModule,
+	TuiButtonModule,
 } from '@taiga-ui/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
@@ -13,20 +13,9 @@ import {
 	TuiDataListWrapperModule,
 	TuiSelectModule,
 } from '@taiga-ui/kit';
-
-interface City {
-	id: number;
-	wikiDataId: string;
-	type: string;
-	name: string;
-	country: string;
-	countryCode: string;
-	region: string;
-	regionCode: number;
-	latitude: number;
-	longitude: number;
-	population: number;
-}
+import countriesList from '../../assets/countries_list.json';
+import { CitiesService } from '../services/cities/cities.service';
+import { City } from '../services/cities/cities.interface';
 
 @Component({
 	selector: 'app-cities',
@@ -40,39 +29,33 @@ interface City {
 		TuiSelectModule,
 		TuiDataListModule,
 		TuiDataListWrapperModule,
+		TuiButtonModule,
 	],
 	templateUrl: './cities.component.html',
 	styleUrl: './cities.component.scss',
 })
 export class CitiesComponent implements OnInit {
 	data: City[] = [];
-	httpClient = inject(HttpClient);
 
 	totalPages = 1;
 	currentPageIndex = 0;
 	limit = 5;
 
-	items = ['first', 'second'];
-
-	form = new FormGroup({
-		value: new FormControl(''),
-	});
+	constructor(private dataService: CitiesService) {}
 
 	ngOnInit(): void {
-		this.fetchData();
+		this.dataService.fetchData().subscribe((res: any) => {
+			this.data = res.data;
+			this.totalPages = Math.ceil(res.metadata.totalCount / this.limit);
+		});
 	}
 
-	fetchData() {
-		this.httpClient
-			.get(
-				`http://geodb-free-service.wirefreethought.com/v1/geo/cities/?limit=${this.limit}`
-			)
-			.subscribe((res: any) => {
-				this.data = res.data;
-				console.log(res);
-				this.totalPages = Math.ceil(res.metadata.totalCount / this.limit);
-			});
-	}
+	items = [...countriesList.map(a => a.name)];
+
+	form = new FormGroup({
+		country: new FormControl(''),
+		city: new FormControl(''),
+	});
 
 	goToPage(index: number): void {
 		this.currentPageIndex = index;
