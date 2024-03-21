@@ -30,7 +30,6 @@ export class CountriesComponent implements OnInit {
 	currentPageIndex = 0;
 	limit = 5;
 	offset = 0;
-	searchQuery: string = '';
 
 	constructor(private dataService: CountriesService) {}
 

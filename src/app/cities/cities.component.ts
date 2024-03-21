@@ -64,12 +64,7 @@ export class CitiesComponent implements OnInit {
 		private route: ActivatedRoute,
 		private router: Router,
 		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
-	) {
-		// route.params.subscribe(val => {
-		// 	this.form.controls.country.setValue(val);
-		// 	this.fetchData();
-		// });
-	}
+	) {}
 
 	ngOnInit(): void {
 		this.route.params.subscribe(params => {
