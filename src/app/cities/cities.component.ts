@@ -83,9 +83,13 @@ export class CitiesComponent implements OnInit {
 			.fetchData(this.offset, this.limit, this.form.value.city, code)
 			.subscribe((res: any) => {
 				this.data = res.data;
-				this.totalPages = Math.ceil(
-					(res.metadata.totalCount - 50) / this.limit // апи возвращает неправильное кол-во элементов
-				);
+				if (this.form.value.city || code) {
+					this.totalPages = Math.ceil(res.metadata.totalCount / this.limit);
+				} else {
+					this.totalPages = Math.ceil(
+						(res.metadata.totalCount - 50) / this.limit // апи возвращает неправильное кол-во элементов
+					);
+				}
 			});
 	}
 
