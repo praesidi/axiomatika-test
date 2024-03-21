@@ -2,13 +2,15 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
 
 	tui-input {
 		width: 225px;
 	}
 
 	tui-select {
-		min-width: 95px;
+		min-width: 225px;
 	}
 }
 
@@ -30,6 +32,73 @@
 	td {
 		padding: 12px 0;
 		font-weight: 400;
+	}
+
+	.icon-button {
+		width: fit-content;
+		height: auto;
+	}
+}
+
+.info-dialog-table {
+	width: 100%;
+	margin-top: 20px;
+	margin-bottom: 80px;
+
+	td {
+		padding: 12px;
+
+		.property {
+			color: rgba(27, 31, 59, 0.65);
+			font-size: 14px;
+			line-height: 16px;
+			margin-bottom: 4px;
+		}
+
+		.value {
+			color: rgba(25, 28, 48, 0.9);
+			font-size: 16px;
+			line-height: 20px;
+			font-weight: 500;
+		}
+	}
+}
+
+.info-dialog-buttons {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.edit-dialog-form {
+	margin-top: 24px;
+	margin-bottom: 48px;
+
+	.inputs-container {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+
+		.form-row {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+			gap: 12px;
+
+			tui-input {
+				flex: 1;
+			}
+		}
+	}
+}
+
+.edit-dialog-buttons {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 12px;
+
+	.cancel-button {
+		color: #dd4c1e;
 	}
 }
 

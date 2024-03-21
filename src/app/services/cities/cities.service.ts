@@ -7,9 +7,22 @@ import { HttpClient } from '@angular/common/http';
 export class CitiesService {
 	constructor(private http: HttpClient) {}
 
-	fetchData() {
-		return this.http.get(
-			`http://geodb-free-service.wirefreethought.com/v1/geo/cities/?limit=`
-		);
+	fetchData(
+		offset: number,
+		limit: number,
+		query: string | null | undefined,
+		selectedCountryId: string
+	) {
+		let url = `http://geodb-free-service.wirefreethought.com/v1/geo/cities/?offset=${offset}&limit=${limit}`;
+
+		if (query) {
+			url += `&namePrefix=${query}`;
+		}
+
+		if (selectedCountryId) {
+			url += `&countryIds=${selectedCountryId}`;
+		}
+
+		return this.http.get(url);
 	}
 }

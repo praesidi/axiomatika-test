@@ -4,8 +4,9 @@
 			tuiTextfieldIconLeft="tuiIconSearch"
 			formControlName="value"
 			tuiTextfieldSize="s"
-			[tuiTextfieldCleaner]="true"
+			[tuiTextfieldCleaner]="false"
 			[tuiTextfieldLabelOutside]="true"
+			(input)="onSearch()"
 			class="input"
 		>
 			Поиск
@@ -14,31 +15,41 @@
 	</form>
 </div>
 
-<table tuiTable class="table">
-	<thead>
-		<tr>
-			<th tuiTh>ID страны</th>
-			<th tuiTh>Наименование</th>
-			<th tuiTh>Код страны</th>
-			<th tuiTh>Код валют</th>
-		</tr>
-	</thead>
-	<tbody tuiTbody>
-		@for (item of data; track item.wikiDataId) {
-			<tr tuiTr>
-				<td tuiTd>
-					<div class="country-link">
-						{{ item.wikiDataId }}
-						<a icon="tuiIconExternalLink" iconAlign="left" tuiLink> </a>
-					</div>
-				</td>
-				<td tuiTd>{{ item.name }}</td>
-				<td tuiTd>{{ item.code }}</td>
-				<td tuiTd>{{ item.currencyCodes }}</td>
+@if (data.length > 0) {
+	<table tuiTable class="table">
+		<thead>
+			<tr>
+				<th tuiTh>ID страны</th>
+				<th tuiTh>Наименование</th>
+				<th tuiTh>Код страны</th>
+				<th tuiTh>Код валют</th>
 			</tr>
-		}
-	</tbody>
-</table>
+		</thead>
+		<tbody tuiTbody>
+			@for (item of data; track item.wikiDataId) {
+				<tr tuiTr>
+					<td tuiTd>
+						<div class="country-link">
+							{{ item.wikiDataId }}
+							<a
+								routerLink="/cities/{{ item.name }}"
+								icon="tuiIconExternalLink"
+								iconAlign="left"
+								tuiLink
+							>
+							</a>
+						</div>
+					</td>
+					<td tuiTd class="long-cell">{{ item.name }}</td>
+					<td tuiTd>{{ item.code }}</td>
+					<td tuiTd>{{ item.currencyCodes }}</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+} @else {
+	<p>Ничего не найдено</p>
+}
 
 <div class="pagination-wrapper">
 	<tui-pagination

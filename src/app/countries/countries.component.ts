@@ -30,14 +30,28 @@ export class CountriesComponent implements OnInit {
 	currentPageIndex = 0;
 	limit = 5;
 	offset = 0;
+	searchQuery: string = '';
 
 	constructor(private dataService: CountriesService) {}
 
 	ngOnInit(): void {
-		this.dataService.fetchData().subscribe((res: any) => {
-			this.data = res.data;
-			this.totalPages = Math.ceil(res.metadata.totalCount / this.limit);
-		});
+		this.fetchData();
+	}
+
+	fetchData() {
+		this.dataService
+			.fetchData(this.offset, this.limit, this.form.value.value)
+			.subscribe((res: any) => {
+				this.data = res.data;
+				this.totalPages = Math.ceil(res.metadata.totalCount / this.limit);
+			});
+	}
+
+	onSearch() {
+		console.log('change:', this.form.value.value);
+		this.fetchData();
+		this.currentPageIndex = 0;
+		this.offset = 0;
 	}
 
 	form = new FormGroup({
@@ -47,6 +61,7 @@ export class CountriesComponent implements OnInit {
 	goToPage(index: number): void {
 		this.currentPageIndex = index;
 		this.offset = this.currentPageIndex * this.limit;
+		this.fetchData();
 		console.info('New page:', this.currentPageIndex, 'Offset: ', this.offset);
 	}
 }

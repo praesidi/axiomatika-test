@@ -1,18 +1,21 @@
 <div class="filters-container">
 	<form [formGroup]="form" class="form">
-		<tui-select formControlName="value" tuiTextfieldSize="s">
-			<tui-data-list-wrapper
-				*tuiDataList
-				[items]="items"
-			></tui-data-list-wrapper>
+		<tui-select
+			(focusedChange)="onSelect()"
+			formControlName="country"
+			tuiTextfieldSize="s"
+		>
+			<tui-data-list-wrapper *tuiDataList [items]="countriesName">
+			</tui-data-list-wrapper>
 		</tui-select>
 
 		<tui-input
 			tuiTextfieldIconLeft="tuiIconSearch"
-			formControlName="value"
+			formControlName="city"
 			tuiTextfieldSize="s"
-			[tuiTextfieldCleaner]="true"
+			[tuiTextfieldCleaner]="false"
 			[tuiTextfieldLabelOutside]="true"
+			(input)="onSearch()"
 			class="input"
 		>
 			Поиск
@@ -21,28 +24,53 @@
 	</form>
 </div>
 
-<table tuiTable class="table">
-	<thead>
-		<tr>
-			<th tuiTh>Страны</th>
-			<th tuiTh>Наименование</th>
-			<th tuiTh>Регион</th>
-			<th tuiTh>Население</th>
-			<th tuiTh></th>
-		</tr>
-	</thead>
-	<tbody tuiTbody>
-		@for (item of data; track item.wikiDataId) {
-			<tr tuiTr>
-				<td tuiTd>{{ item.country }}</td>
-				<td tuiTd>{{ item.name }}</td>
-				<td tuiTd>{{ item.region }}</td>
-				<td tuiTd>{{ item.population }}</td>
-				<td tuiTd><button>open</button></td>
+@if (data.length > 0) {
+	<table tuiTable class="table">
+		<thead>
+			<tr>
+				<th tuiTh>Страны</th>
+				<th tuiTh>Наименование</th>
+				<th tuiTh>Регион</th>
+				<th tuiTh>Население</th>
+				<th tuiTh></th>
 			</tr>
-		}
-	</tbody>
-</table>
+		</thead>
+		<tbody tuiTbody>
+			@for (item of data; track item.wikiDataId) {
+				<tr tuiTr>
+					<td tuiTd>{{ item.country }}</td>
+					<td tuiTd>{{ item.name }}</td>
+					<td tuiTd>{{ item.region }}</td>
+					<td tuiTd>{{ formatPopulationNumber(item.population) }}</td>
+					<td tuiTd>
+						<button
+							tuiIconButton
+							appearance="icon"
+							type="button"
+							icon="tuiIconEye"
+							class="icon-button"
+							(click)="showDialog(infoDialog, 'm', item)"
+						>
+							open
+						</button>
+						<button
+							tuiIconButton
+							appearance="icon"
+							type="button"
+							icon="tuiIconEdit3"
+							class="icon-button"
+							(click)="showEditDialog(editDialog, 'm', item)"
+						>
+							edit
+						</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+} @else {
+	<p>Ничего не найдено</p>
+}
 
 <div class="pagination-wrapper">
 	<tui-pagination
@@ -52,3 +80,90 @@
 	>
 	</tui-pagination>
 </div>
+
+<ng-template #infoDialog let-observer>
+	<table class="info-dialog-table">
+		<tr>
+			<td>
+				<div class="property">Страна</div>
+				<div class="value">{{ selectedCity?.country || '-' }}</div>
+			</td>
+			<td>
+				<div class="property">Регион</div>
+				<div class="value">{{ selectedCity?.region || '-' }}</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="property">Население</div>
+				<div class="value">{{ selectedCity?.population || '-' }}</div>
+			</td>
+			<td>
+				<div class="property">Код страны</div>
+				<div class="value">{{ selectedCity?.countryCode || '-' }}</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="property">Долгота</div>
+				<div class="value">{{ selectedCity?.longitude || '-' }}</div>
+			</td>
+			<td>
+				<div class="property">Широта</div>
+				<div class="value">{{ selectedCity?.latitude || '-' }}</div>
+			</td>
+		</tr>
+	</table>
+	<div class="info-dialog-buttons">
+		<button size="m" tuiButton type="button" (click)="observer.complete()">
+			Закрыть
+		</button>
+	</div>
+</ng-template>
+
+<ng-template #editDialog let-observer>
+	<form [formGroup]="editForm" class="edit-dialog-form">
+		<div class="inputs-container">
+			<tui-input formControlName="region" [tuiTextfieldCleaner]="true">
+				Регион
+				<input tuiTextfield type="text" />
+			</tui-input>
+			<div class="form-row">
+				<tui-input formControlName="population" [tuiTextfieldCleaner]="true">
+					Население
+					<input tuiTextfield type="number" min="0" />
+				</tui-input>
+				<tui-input formControlName="countryCode" [tuiTextfieldCleaner]="true">
+					Код Страны
+					<input tuiTextfield type="text" />
+				</tui-input>
+			</div>
+			<div class="form-row">
+				<tui-input formControlName="longitude" [tuiTextfieldCleaner]="true">
+					Долгота
+					<input tuiTextfield type="number" />
+				</tui-input>
+				<tui-input formControlName="latitude" [tuiTextfieldCleaner]="true">
+					Широта
+					<input tuiTextfield type="number" />
+				</tui-input>
+			</div>
+		</div>
+	</form>
+
+	<div class="edit-dialog-buttons">
+		<button
+			size="m"
+			tuiButton
+			type="button"
+			appearance="flat"
+			class="cancel-button"
+			(click)="observer.complete()"
+		>
+			Отменить
+		</button>
+		<button size="m" tuiButton type="button" (click)="observer.complete()">
+			Сохранить
+		</button>
+	</div>
+</ng-template>
